@@ -32,7 +32,7 @@ export async function updateUser({
         name,
         bio,
         image,
-        onbarded: true
+        onboarded: true
       },
       { upsert: true }
     );
@@ -46,4 +46,19 @@ export async function updateUser({
 
  
 
+}
+
+export async function fetchUser(userId: string) {
+  try {
+    connectToDB();
+
+    return await User
+      .findOne({ id: userId })
+      // .populate({
+      //   path: 'communities',
+      //   model:: Community
+      // })
+  } catch (error: any) {
+    throw new Error(`Failed to fetch user: ${error.message}`)
+  }
 }
