@@ -75,7 +75,7 @@ const AccountProfile = ({ user, btnTitle } : Props) => {
       }
     }
 
-    // TODO: Update user profile
+    
   }
   
   return (
