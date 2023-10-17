@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import User from "../models/user.model";
 import { connectToDB } from "../mongoose";
 import { string } from "zod";
+import Strand from "../models/strand.model";
 
 interface Params {
   userId: string; 
@@ -60,5 +61,28 @@ export async function fetchUser(userId: string) {
       // })
   } catch (error: any) {
     throw new Error(`Failed to fetch user: ${error.message}`)
+  }
+}
+
+export async function fetchUserPosts(userId: string) {
+  try {
+    connectToDB();
+    const strands = await User.findOne({ id: userId })
+      .populate({
+        path: 'strands',
+        model: Strand,
+        populate: {
+          path: 'children',
+          model: Strand,
+          populate: {
+            path: 'author',
+            model: User,
+            select: 'name image id'
+          }
+        }
+      })
+      return strands;
+  } catch (error: any) {
+    throw new Error (`Failed to fetch user posts: ${error.message}`)
   }
 }
