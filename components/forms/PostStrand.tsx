@@ -15,6 +15,8 @@ import { Textarea } from '../ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname, useRouter } from 'next/navigation';
 import { StrandValidation } from '@/lib/validations/strand';
+import { createStrand } from '@/lib/actions/strand.actions';
+import { getRandomValues } from "crypto";
 
 // import { updateUser } from '@/lib/actions/user.actions';
 
@@ -44,8 +46,15 @@ function PostStrand ({ userId }: {userId: string}) {
     }
   });
 
-  const onSubmit = () => {
-    
+  const onSubmit = async (values: z.infer<typeof StrandValidation>) => {
+    await createStrand({ 
+      text: values.strand,
+      author: userId,
+      communityId: null,
+      path: pathname
+    })
+
+    router.push('/');
   }
 
   return (
