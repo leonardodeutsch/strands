@@ -4,6 +4,7 @@ import { fetchStrandById } from "@/lib/actions/strand.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { threadId } from "worker_threads";
 
 const Page = async ({ params }: { params: { id: string }}) => {
   if (!params.id) return null;
@@ -35,9 +36,26 @@ const Page = async ({ params }: { params: { id: string }}) => {
       <div className="mt-7">
         <Comment 
           strandId={strand.id}
-          currentUserImg={user.imageUrl}
+          currentUserImg={userInfo.image}
           currentUserId={JSON.stringify(userInfo._id)}
         />
+      </div>
+
+      <div className="mt-10">
+        {strand.children.map((childItem: any) => (
+          <StrandCard
+            key={childItem._id}
+            id={childItem._id}
+            currentUserId={user?.id || ''}
+            parentId={childItem.parentId}
+            content={childItem.text}
+            author={childItem.author}
+            community={childItem.community}
+            createdAt={childItem.createdAt}
+            comments={childItem.children}
+            isComment
+          />
+        ))}
       </div>
     </section>
   )

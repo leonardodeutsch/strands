@@ -91,3 +91,26 @@ export async function fetchStrandById(id: string) {
     throw new Error(`Error fetching strand: ${error.message}`);
   }
 }
+
+export async function addCommentToStrand(strandId: string, commentText: string, userId: string, path: string) {
+  connectToDB();
+
+  try {
+    const originalStrand = await Strand.findById(strandId);
+    if (!originalStrand) {
+      throw new Error('Strand not found');
+    }
+    const commentStrand = new Strand({
+      text: commentText,
+      author: userId,
+      parentId: strandId
+    })
+
+    const savedCommentStrand = await commentStrand.save();
+    originalStrand.children.push(savedCommentStrand._id);
+    await originalStrand.save();
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Error adding comment to strand: ${error.message}`)
+  }
+}

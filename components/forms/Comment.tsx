@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname, useRouter } from 'next/navigation';
 import { CommentValidation } from '@/lib/validations/strand';
 import Image from "next/image";
+import { addCommentToStrand } from "@/lib/actions/strand.actions";
 // import { createStrand } from '@/lib/actions/strand.actions';
 
 interface Props {
@@ -36,14 +37,9 @@ const Comment = ({ strandId, currentUserImg, currentUserId }: Props) => {
   });
 
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
-    // await createStrand({ 
-    //   text: values.strand,
-    //   author: userId,
-    //   communityId: null,
-    //   path: pathname
-    // })
+    await addCommentToStrand(strandId, values.strand, JSON.parse(currentUserId), pathname)
 
-    router.push('/');
+    form.reset();
   }
   
   return (
