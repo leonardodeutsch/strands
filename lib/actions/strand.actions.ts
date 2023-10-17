@@ -55,3 +55,39 @@ export async function fetchStrands(pageNumber = 1, pageSize = 20) {
     
     return { strands, isNext };
 }
+
+export async function fetchStrandById(id: string) {
+  connectToDB();
+  
+  try {
+    const strand = await Strand.findById(id)
+      .populate({
+        path: 'author',
+        model: User,
+        select: "_id id name image"
+      })
+      .populate({
+        path: 'children',
+        populate: [
+          {
+            path: 'author',
+            model: User,
+            select: "_id name parentId image"
+          },
+          {
+            path: 'children',
+            model: Strand,
+            populate: {
+              path: 'author',
+              model: User,
+              select: "_id name parentId image"
+            }
+          }
+        ]
+      }).exec();
+
+      return strand;
+  } catch (error: any) {
+    throw new Error(`Error fetching strand: ${error.message}`);
+  }
+}
