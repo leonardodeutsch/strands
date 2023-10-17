@@ -1,4 +1,5 @@
 import StrandCard from "@/components/cards/StrandCard";
+import Comment from "@/components/forms/Comment";
 import { fetchStrandById } from "@/lib/actions/strand.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
@@ -28,6 +29,14 @@ const Page = async ({ params }: { params: { id: string }}) => {
           community={strand.community}
           createdAt={strand.createdAt}
           comments={strand.children}
+        />
+      </div>
+
+      <div className="mt-7">
+        <Comment 
+          strandId={strand.id}
+          currentUserImg={user.imageUrl}
+          currentUserId={JSON.stringify(userInfo._id)}
         />
       </div>
     </section>

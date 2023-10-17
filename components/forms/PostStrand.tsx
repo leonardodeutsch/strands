@@ -16,7 +16,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname, useRouter } from 'next/navigation';
 import { StrandValidation } from '@/lib/validations/strand';
 import { createStrand } from '@/lib/actions/strand.actions';
-import { getRandomValues } from "crypto";
 
 // import { updateUser } from '@/lib/actions/user.actions';
 
