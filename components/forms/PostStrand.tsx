@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { usePathname, useRouter } from 'next/navigation';
 import { StrandValidation } from '@/lib/validations/strand';
 import { createStrand } from '@/lib/actions/strand.actions';
+import { useOrganization } from "@clerk/nextjs";
 
 // import { updateUser } from '@/lib/actions/user.actions';
 
@@ -36,6 +37,7 @@ interface Props {
 function PostStrand ({ userId }: {userId: string}) {
   const router = useRouter();
   const pathname = usePathname();
+  const { organization } = useOrganization();
 
   const form = useForm({
     resolver: zodResolver(StrandValidation),
@@ -46,12 +48,14 @@ function PostStrand ({ userId }: {userId: string}) {
   });
 
   const onSubmit = async (values: z.infer<typeof StrandValidation>) => {
+    console.log('org id:', organization)
     await createStrand({ 
       text: values.strand,
       author: userId,
-      communityId: null,
+      communityId: organization ? organization.id : null,
       path: pathname
     })
+
 
     router.push('/');
   }
