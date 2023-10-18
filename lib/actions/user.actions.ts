@@ -66,9 +66,9 @@ export async function fetchUserPosts(userId: string) {
   try {
     connectToDB();
 
-    // Find all threads authored by the user with the given userId
-    const threads = await User.findOne({ id: userId }).populate({
-      path: "threads",
+    // Find all strands authored by the user with the given userId
+    const strands = await User.findOne({ id: userId }).populate({
+      path: "strands",
       model: Strand,
       populate: [
         {
@@ -87,9 +87,9 @@ export async function fetchUserPosts(userId: string) {
         },
       ],
     });
-    return threads;
+    return strands;
   } catch (error) {
-    console.error("Error fetching user threads:", error);
+    console.error("Error fetching user strands:", error);
     throw error;
   }
 }
@@ -157,7 +157,7 @@ export async function getActivity(userId: string) {
   try {
     connectToDB();
 
-    // Find all threads created by the user
+    // Find all strands created by the user
     const userStrands = await Strand.find({ author: userId });
 
     // Collect all the child thread ids (replies) from the 'children' field of each user thread
@@ -165,10 +165,10 @@ export async function getActivity(userId: string) {
       return acc.concat(userStrand.children);
     }, []);
 
-    // Find and return the child threads (replies) excluding the ones created by the same user
+    // Find and return the child strands (replies) excluding the ones created by the same user
     const replies = await Strand.find({
       _id: { $in: childStrandIds },
-      author: { $ne: userId }, // Exclude threads authored by the same user
+      author: { $ne: userId }, // Exclude strands authored by the same user
     }).populate({
       path: "author",
       model: User,
