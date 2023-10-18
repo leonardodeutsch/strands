@@ -48,7 +48,6 @@ function PostStrand ({ userId }: {userId: string}) {
   });
 
   const onSubmit = async (values: z.infer<typeof StrandValidation>) => {
-    console.log('org id:', organization)
     await createStrand({ 
       text: values.strand,
       author: userId,
