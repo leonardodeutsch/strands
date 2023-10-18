@@ -21,7 +21,7 @@ const Page = async () => {
         {activity.length > 0 ? (
           <>
             {activity.map((activity) => (
-              <Link key={activity._id} href={`/thread/${activity.parentId}`}>
+              <Link key={activity._id} href={`/strand/${activity.parentId}`}>
                 <article className="activity-card">
                   <Image 
                     src={activity.author.image} 
@@ -30,6 +30,12 @@ const Page = async () => {
                     width={20} 
                     className="rounded-full object-cover"
                   />
+                  <p className="!text-small-regular text-light-1">
+                    <span className="mr-1 text-primary-500">
+                      {activity.author.name}
+                    </span>{" "}
+                    replied to your strand
+                  </p>
                 </article>
               </Link>
             ))}

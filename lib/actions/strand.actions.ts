@@ -72,7 +72,7 @@ export async function fetchStrandById(id: string) {
           {
             path: 'author',
             model: User,
-            select: "_id name parentId image"
+            select: "_id id name parentId image"
           },
           {
             path: 'children',
@@ -80,7 +80,7 @@ export async function fetchStrandById(id: string) {
             populate: {
               path: 'author',
               model: User,
-              select: "_id name parentId image"
+              select: "_id id name parentId image"
             }
           }
         ]

@@ -4,7 +4,6 @@ import { fetchStrandById } from "@/lib/actions/strand.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { threadId } from "worker_threads";
 
 const Page = async ({ params }: { params: { id: string }}) => {
   if (!params.id) return null;
